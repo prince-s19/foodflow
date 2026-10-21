@@ -42,11 +42,11 @@ public class MainWindow extends JFrame implements OrderUpdateListener {
 
         setTitle("FOODFLOW // Online Food Order Processing Simulator [Neobrutalism Edition]");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1400, 920);
-        setMinimumSize(new Dimension(1100, 750));
+        setSize(1360, 780);
+        setMinimumSize(new Dimension(1100, 700));
         setLocationRelativeTo(null);
 
-        // System Look & Feel (keep standard Swing so custom Neobrutalism styles shine)
+        // System Look & Feel
         try {
             UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
         } catch (Exception ignored) {
@@ -73,7 +73,7 @@ public class MainWindow extends JFrame implements OrderUpdateListener {
     private void buildRootLayout() {
         JPanel rootPanel = new JPanel(new BorderLayout(0, 8));
         rootPanel.setBackground(NeobrutalismTheme.COLOR_BG);
-        rootPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+        rootPanel.setBorder(new EmptyBorder(8, 10, 10, 10));
 
         // 1. Top Header & Metrics Banner
         JPanel topContainer = new JPanel();
@@ -91,8 +91,8 @@ public class MainWindow extends JFrame implements OrderUpdateListener {
         // 2. Center & Body Layout
         // Split into Left (Dashboard Lanes + Thread Monitor) and Right (Input + History / Logs tabs)
         JSplitPane mainSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-        mainSplitPane.setDividerLocation(840);
-        mainSplitPane.setResizeWeight(0.65);
+        mainSplitPane.setDividerLocation(780);
+        mainSplitPane.setResizeWeight(0.60);
         mainSplitPane.setDividerSize(6);
         mainSplitPane.setBorder(null);
         mainSplitPane.setOpaque(false);
@@ -104,7 +104,7 @@ public class MainWindow extends JFrame implements OrderUpdateListener {
         leftPanel.add(buildThreeLaneDashboard(), BorderLayout.CENTER);
 
         threadMonitorPanel = new ThreadMonitorPanel();
-        threadMonitorPanel.setPreferredSize(new Dimension(840, 115));
+        threadMonitorPanel.setPreferredSize(new Dimension(780, 142));
         leftPanel.add(threadMonitorPanel, BorderLayout.SOUTH);
 
         mainSplitPane.setLeftComponent(leftPanel);
@@ -114,7 +114,7 @@ public class MainWindow extends JFrame implements OrderUpdateListener {
         rightPanel.setOpaque(false);
 
         inputPanel = new OrderInputPanel(system);
-        inputPanel.setPreferredSize(new Dimension(500, 360));
+        inputPanel.setPreferredSize(new Dimension(460, 400));
         rightPanel.add(inputPanel, BorderLayout.NORTH);
 
         // Bottom Right Tabs: Completed Orders Table & Live Logs Terminal
@@ -126,8 +126,8 @@ public class MainWindow extends JFrame implements OrderUpdateListener {
         historyPanel = new HistoryTablePanel(system);
         logConsolePanel = new LogConsolePanel();
 
-        tabbedPane.addTab("📜 COMPLETED ORDERS", historyPanel);
-        tabbedPane.addTab("💻 THREAD LOGS", logConsolePanel);
+        tabbedPane.addTab("[AUDIT] COMPLETED ORDERS", historyPanel);
+        tabbedPane.addTab("[LOGS] THREAD TERMINAL", logConsolePanel);
 
         rightPanel.add(tabbedPane, BorderLayout.CENTER);
 
@@ -141,7 +141,7 @@ public class MainWindow extends JFrame implements OrderUpdateListener {
     private JPanel buildHeaderBar() {
         JPanel headerPanel = new JPanel(new BorderLayout(12, 0));
         headerPanel.setBackground(NeobrutalismTheme.COLOR_WHITE);
-        headerPanel.setBorder(new NeobrutalismTheme.HardShadowBorder(3, 4, 10));
+        headerPanel.setBorder(new NeobrutalismTheme.HardShadowBorder(3, 4, 8));
 
         // Left Branding
         JPanel brandPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
@@ -163,7 +163,7 @@ public class MainWindow extends JFrame implements OrderUpdateListener {
         titles.setOpaque(false);
 
         JLabel subTitle = new JLabel("FOOD ORDER PROCESSOR // MULTI-THREADED PIPELINE");
-        subTitle.setFont(NeobrutalismTheme.FONT_SUBHEADER);
+        subTitle.setFont(NeobrutalismTheme.FONT_HEADER);
         subTitle.setForeground(NeobrutalismTheme.COLOR_BLACK);
 
         JLabel techInfo = new JLabel("OOPS Thread Synchronization: BlockingQueue<Order> • ExecutorService • Event-Driven UI");
@@ -211,21 +211,21 @@ public class MainWindow extends JFrame implements OrderUpdateListener {
 
         kitchenLane = new DashboardLanePanel(
                 "KITCHEN LANE",
-                "🍳",
+                "[KITCHEN]",
                 NeobrutalismTheme.ACCENT_BLUE,
                 this::handleOrderCancel
         );
 
         packagingLane = new DashboardLanePanel(
                 "PACKAGING LANE",
-                "📦",
+                "[PACKAGING]",
                 NeobrutalismTheme.ACCENT_YELLOW,
                 this::handleOrderCancel
         );
 
         deliveryLane = new DashboardLanePanel(
                 "DELIVERY LANE",
-                "🚀",
+                "[DELIVERY]",
                 NeobrutalismTheme.ACCENT_GREEN,
                 this::handleOrderCancel
         );

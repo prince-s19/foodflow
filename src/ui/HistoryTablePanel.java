@@ -30,13 +30,13 @@ public class HistoryTablePanel extends JPanel {
     private JLabel countLabel;
 
     private static final String[] COLUMNS = {
-            "ORDER ID", "CUSTOMER", "ITEMS", "PRIORITY", "TOTAL TIME", "KITCHEN", "PACKAGING", "DELIVERY", "COMPLETED AT"
+            "ORDER ID", "CUSTOMER", "ITEMS", "TYPE", "TOTAL TIME", "KITCHEN", "PACK", "DELIVERY", "COMPLETED"
     };
 
     public HistoryTablePanel(OrderProcessingSystem system) {
         this.system = system;
 
-        setLayout(new BorderLayout(0, 8));
+        setLayout(new BorderLayout(0, 4));
         setBackground(NeobrutalismTheme.COLOR_PANEL_BG);
         setBorder(new LineBorder(NeobrutalismTheme.COLOR_BLACK, 3, false));
 
@@ -50,7 +50,7 @@ public class HistoryTablePanel extends JPanel {
         header.setBackground(NeobrutalismTheme.ACCENT_GREEN);
         header.setBorder(new EmptyBorder(8, 12, 8, 12));
 
-        JLabel title = new JLabel("📜 COMPLETED ORDERS & AUDIT LOG");
+        JLabel title = new JLabel("[AUDIT LOG] COMPLETED ORDERS");
         title.setFont(NeobrutalismTheme.FONT_HEADER);
         title.setForeground(NeobrutalismTheme.COLOR_BLACK);
         header.add(title, BorderLayout.WEST);
@@ -59,7 +59,7 @@ public class HistoryTablePanel extends JPanel {
         JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 4, 0));
         searchPanel.setOpaque(false);
 
-        JLabel searchIcon = new JLabel("🔍 FILTER:");
+        JLabel searchIcon = new JLabel("FILTER:");
         searchIcon.setFont(NeobrutalismTheme.FONT_SMALL);
         searchIcon.setForeground(NeobrutalismTheme.COLOR_BLACK);
         searchPanel.add(searchIcon);
@@ -102,6 +102,7 @@ public class HistoryTablePanel extends JPanel {
         table.setGridColor(NeobrutalismTheme.COLOR_BLACK);
         table.setSelectionBackground(NeobrutalismTheme.ACCENT_YELLOW);
         table.setSelectionForeground(NeobrutalismTheme.COLOR_BLACK);
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF); // Enable smooth horizontal scrolling so columns are never squished!
 
         // Header Styling
         JTableHeader th = table.getTableHeader();
@@ -122,27 +123,28 @@ public class HistoryTablePanel extends JPanel {
         table.getColumnModel().getColumn(0).setCellRenderer(centerRenderer); // Order ID
         table.getColumnModel().getColumn(1).setCellRenderer(leftRenderer);   // Customer
         table.getColumnModel().getColumn(2).setCellRenderer(leftRenderer);   // Items
-        table.getColumnModel().getColumn(3).setCellRenderer(centerRenderer); // Priority
+        table.getColumnModel().getColumn(3).setCellRenderer(centerRenderer); // Priority Type
         table.getColumnModel().getColumn(4).setCellRenderer(centerRenderer); // Total Time
         table.getColumnModel().getColumn(5).setCellRenderer(centerRenderer); // Kitchen
         table.getColumnModel().getColumn(6).setCellRenderer(centerRenderer); // Packaging
         table.getColumnModel().getColumn(7).setCellRenderer(centerRenderer); // Delivery
         table.getColumnModel().getColumn(8).setCellRenderer(centerRenderer); // Completed At
 
-        // Adjust column widths
-        table.getColumnModel().getColumn(0).setPreferredWidth(90);
-        table.getColumnModel().getColumn(1).setPreferredWidth(120);
-        table.getColumnModel().getColumn(2).setPreferredWidth(200);
-        table.getColumnModel().getColumn(3).setPreferredWidth(80);
-        table.getColumnModel().getColumn(4).setPreferredWidth(90);
-        table.getColumnModel().getColumn(5).setPreferredWidth(70);
-        table.getColumnModel().getColumn(6).setPreferredWidth(80);
-        table.getColumnModel().getColumn(7).setPreferredWidth(70);
-        table.getColumnModel().getColumn(8).setPreferredWidth(100);
+        // Clear generous column widths
+        table.getColumnModel().getColumn(0).setPreferredWidth(95);  // Order ID
+        table.getColumnModel().getColumn(1).setPreferredWidth(125); // Customer
+        table.getColumnModel().getColumn(2).setPreferredWidth(180); // Items
+        table.getColumnModel().getColumn(3).setPreferredWidth(80);  // Type
+        table.getColumnModel().getColumn(4).setPreferredWidth(90);  // Total Time
+        table.getColumnModel().getColumn(5).setPreferredWidth(75);  // Kitchen
+        table.getColumnModel().getColumn(6).setPreferredWidth(75);  // Packaging
+        table.getColumnModel().getColumn(7).setPreferredWidth(75);  // Delivery
+        table.getColumnModel().getColumn(8).setPreferredWidth(90);  // Completed At
 
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setBorder(new LineBorder(NeobrutalismTheme.COLOR_BLACK, 2, false));
         scrollPane.getViewport().setBackground(NeobrutalismTheme.COLOR_WHITE);
+        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
         add(scrollPane, BorderLayout.CENTER);
     }
@@ -150,7 +152,7 @@ public class HistoryTablePanel extends JPanel {
     private void buildFooter() {
         JPanel footer = new JPanel(new BorderLayout(8, 0));
         footer.setBackground(NeobrutalismTheme.COLOR_BG);
-        footer.setBorder(new EmptyBorder(6, 12, 6, 12));
+        footer.setBorder(new EmptyBorder(6, 10, 6, 10));
 
         countLabel = new JLabel("TOTAL LOGGED: 0 ORDERS");
         countLabel.setFont(NeobrutalismTheme.FONT_SUBHEADER);
@@ -161,20 +163,20 @@ public class HistoryTablePanel extends JPanel {
         btnPanel.setOpaque(false);
 
         JButton exportCsvBtn = NeobrutalismTheme.createButton(
-                "📥 EXPORT CSV",
+                "[CSV] EXPORT CSV",
                 NeobrutalismTheme.ACCENT_CYAN,
                 NeobrutalismTheme.COLOR_BLACK
         );
-        exportCsvBtn.setPreferredSize(new Dimension(140, 32));
+        exportCsvBtn.setPreferredSize(new Dimension(145, 34));
         exportCsvBtn.addActionListener(e -> exportCsv());
         btnPanel.add(exportCsvBtn);
 
         JButton clearBtn = NeobrutalismTheme.createButton(
-                "🗑 CLEAR HISTORY",
+                "[X] CLEAR HISTORY",
                 NeobrutalismTheme.ACCENT_RED,
                 NeobrutalismTheme.COLOR_WHITE
         );
-        clearBtn.setPreferredSize(new Dimension(140, 32));
+        clearBtn.setPreferredSize(new Dimension(145, 34));
         clearBtn.addActionListener(e -> clearHistory());
         btnPanel.add(clearBtn);
 
@@ -205,7 +207,7 @@ public class HistoryTablePanel extends JPanel {
                         o.getOrderId(),
                         o.getCustomerName(),
                         o.getItemsAsString(),
-                        o.isVip() ? "⭐ VIP" : "STANDARD",
+                        o.isVip() ? "★ VIP" : "STANDARD",
                         String.format("%.2fs", o.getTotalProcessingTimeSeconds()),
                         String.format("%.1fs", o.getKitchenDurationMs() / 1000.0),
                         String.format("%.1fs", o.getPackagingDurationMs() / 1000.0),

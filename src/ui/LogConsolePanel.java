@@ -76,7 +76,7 @@ public class LogConsolePanel extends JPanel {
         header.setBackground(new Color(0x1A, 0x1A, 0x1A));
         header.setBorder(new EmptyBorder(6, 10, 6, 10));
 
-        JLabel title = new JLabel("💻 LIVE THREAD EXECUTION LOGS");
+        JLabel title = new JLabel("[LOGS] LIVE THREAD EXECUTION LOGS");
         title.setFont(NeobrutalismTheme.FONT_SUBHEADER);
         title.setForeground(NeobrutalismTheme.COLOR_WHITE);
         header.add(title, BorderLayout.WEST);

@@ -20,7 +20,7 @@ import java.util.function.Consumer;
 public class DashboardLanePanel extends JPanel {
 
     private final String stageName;
-    private final String stageIcon;
+    private final String stageTag;
     private final Color accentColor;
     private final Consumer<String> onCancelRequested;
 
@@ -31,9 +31,9 @@ public class DashboardLanePanel extends JPanel {
 
     private final Map<String, OrderCard> activeCardMap = new LinkedHashMap<>();
 
-    public DashboardLanePanel(String stageName, String stageIcon, Color accentColor, Consumer<String> onCancelRequested) {
+    public DashboardLanePanel(String stageName, String stageTag, Color accentColor, Consumer<String> onCancelRequested) {
         this.stageName = stageName;
-        this.stageIcon = stageIcon;
+        this.stageTag = stageTag;
         this.accentColor = accentColor;
         this.onCancelRequested = onCancelRequested;
 
@@ -49,16 +49,13 @@ public class DashboardLanePanel extends JPanel {
         JPanel headerPanel = new JPanel();
         headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.Y_AXIS));
         headerPanel.setBackground(accentColor);
-        headerPanel.setBorder(new CompoundBorder(
-                new LineBorder(NeobrutalismTheme.COLOR_BLACK, 0, false),
-                new EmptyBorder(8, 10, 8, 10)
-        ));
+        headerPanel.setBorder(new EmptyBorder(8, 10, 8, 10));
 
-        // Top Header Row: Title + Count Badge
-        JPanel topRow = new JPanel(new BorderLayout(8, 0));
+        // Top Header Row: Stage Tag + Name + Count Badge
+        JPanel topRow = new JPanel(new BorderLayout(6, 0));
         topRow.setOpaque(false);
 
-        JLabel titleLabel = new JLabel(stageIcon + " " + stageName);
+        JLabel titleLabel = new JLabel(stageTag + " " + stageName);
         titleLabel.setFont(NeobrutalismTheme.FONT_HEADER);
         titleLabel.setForeground(NeobrutalismTheme.COLOR_BLACK);
         topRow.add(titleLabel, BorderLayout.WEST);
@@ -78,14 +75,14 @@ public class DashboardLanePanel extends JPanel {
         JPanel workerRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         workerRow.setOpaque(false);
 
-        workerStatusLabel = new JLabel("Worker: IDLE");
+        workerStatusLabel = new JLabel("WORKER: IDLE");
         workerStatusLabel.setFont(NeobrutalismTheme.FONT_SMALL);
         workerStatusLabel.setForeground(NeobrutalismTheme.COLOR_BLACK);
         workerRow.add(workerStatusLabel);
 
         headerPanel.add(workerRow);
 
-        // Solid separator under header
+        // Solid 3px separator line under header
         JPanel separator = new JPanel();
         separator.setPreferredSize(new Dimension(100, 3));
         separator.setBackground(NeobrutalismTheme.COLOR_BLACK);
@@ -101,9 +98,9 @@ public class DashboardLanePanel extends JPanel {
         cardsContainer = new JPanel();
         cardsContainer.setLayout(new BoxLayout(cardsContainer, BoxLayout.Y_AXIS));
         cardsContainer.setBackground(NeobrutalismTheme.COLOR_BG);
-        cardsContainer.setBorder(new EmptyBorder(10, 10, 10, 10));
+        cardsContainer.setBorder(new EmptyBorder(8, 8, 8, 8));
 
-        emptyStateLabel = new JLabel("<html><center><b>NO ACTIVE ORDERS</b><br><small>Lane is currently idle</small></center></html>", SwingConstants.CENTER);
+        emptyStateLabel = new JLabel("<html><center><b>LANE IDLE</b><br><small>Waiting for incoming orders</small></center></html>", SwingConstants.CENTER);
         emptyStateLabel.setFont(NeobrutalismTheme.FONT_SUBHEADER);
         emptyStateLabel.setForeground(new Color(0x88, 0x88, 0x88));
         emptyStateLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -119,9 +116,6 @@ public class DashboardLanePanel extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
     }
 
-    /**
-     * Adds an order card to this lane.
-     */
     public synchronized void addOrderCard(Order order) {
         if (!activeCardMap.containsKey(order.getOrderId())) {
             OrderCard card = new OrderCard(order, onCancelRequested);
@@ -130,18 +124,12 @@ public class DashboardLanePanel extends JPanel {
         }
     }
 
-    /**
-     * Removes an order card from this lane.
-     */
     public synchronized void removeOrderCard(String orderId) {
         if (activeCardMap.remove(orderId) != null) {
             rebuildCardsView();
         }
     }
 
-    /**
-     * Refreshes all active order cards in this lane (timers, progress bars).
-     */
     public synchronized void refreshCards() {
         for (OrderCard card : activeCardMap.values()) {
             card.updateDisplay();
@@ -169,7 +157,7 @@ public class DashboardLanePanel extends JPanel {
             queueCountBadge.setText(activeCardMap.size() + (activeCardMap.size() == 1 ? " ORDER" : " ORDERS"));
             for (OrderCard card : activeCardMap.values()) {
                 cardsContainer.add(card);
-                cardsContainer.add(Box.createVerticalStrut(10));
+                cardsContainer.add(Box.createVerticalStrut(8));
             }
             cardsContainer.add(Box.createVerticalGlue());
         }

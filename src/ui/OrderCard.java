@@ -14,7 +14,7 @@ import java.util.function.Consumer;
 
 /**
  * Custom Neobrutalist Order Card Component.
- * Visualizes an individual order's progress, items, customer, and real-time stage progress bar.
+ * Displays order progress, items, customer, worker, and real-time linear progress bar.
  */
 public class OrderCard extends JPanel {
 
@@ -33,11 +33,13 @@ public class OrderCard extends JPanel {
         this.order = order;
         this.onCancelRequested = onCancelRequested;
 
-        setLayout(new BorderLayout(4, 4));
+        setLayout(new BorderLayout(0, 4));
         setBackground(NeobrutalismTheme.COLOR_WHITE);
-        setBorder(new NeobrutalismTheme.HardShadowBorder(3, 3, 6));
-        setPreferredSize(new Dimension(300, 160));
-        setMaximumSize(new Dimension(Integer.MAX_VALUE, 160));
+        setBorder(new CompoundBorder(
+                new LineBorder(NeobrutalismTheme.COLOR_BLACK, 3, false),
+                new EmptyBorder(6, 8, 6, 8)
+        ));
+        setMaximumSize(new Dimension(Integer.MAX_VALUE, 155));
 
         buildUI();
         updateDisplay();
@@ -45,7 +47,7 @@ public class OrderCard extends JPanel {
 
     private void buildUI() {
         // --- TOP ROW: Order ID & VIP Tag & Cancel Button ---
-        JPanel topPanel = new JPanel(new BorderLayout(4, 0));
+        JPanel topPanel = new JPanel(new BorderLayout(6, 0));
         topPanel.setOpaque(false);
 
         JPanel leftBadges = new JPanel(new FlowLayout(FlowLayout.LEFT, 4, 0));
@@ -60,24 +62,24 @@ public class OrderCard extends JPanel {
         leftBadges.add(idLabel);
 
         if (order.isVip()) {
-            JLabel vipBadge = new JLabel("⭐ VIP");
+            JLabel vipBadge = new JLabel("★ VIP");
             vipBadge.setFont(NeobrutalismTheme.FONT_SMALL);
             vipBadge.setOpaque(true);
             vipBadge.setBackground(NeobrutalismTheme.ACCENT_PURPLE);
             vipBadge.setForeground(NeobrutalismTheme.COLOR_WHITE);
             vipBadge.setBorder(new CompoundBorder(
                     new LineBorder(NeobrutalismTheme.COLOR_BLACK, 2, false),
-                    new EmptyBorder(1, 5, 1, 5)
+                    new EmptyBorder(2, 6, 2, 6)
             ));
             leftBadges.add(vipBadge);
         }
 
         topPanel.add(leftBadges, BorderLayout.WEST);
 
-        // Cancel button (only active if not already delivered)
+        // Cancel button (only active if not terminal)
         if (!order.getStatus().isTerminal()) {
             JButton cancelBtn = new JButton("✕");
-            cancelBtn.setFont(new Font("Courier New", Font.BOLD, 12));
+            cancelBtn.setFont(new Font("Segoe UI", Font.BOLD, 12));
             cancelBtn.setBackground(NeobrutalismTheme.ACCENT_RED);
             cancelBtn.setForeground(NeobrutalismTheme.COLOR_WHITE);
             cancelBtn.setFocusPainted(false);
@@ -99,20 +101,20 @@ public class OrderCard extends JPanel {
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.setOpaque(false);
-        centerPanel.setBorder(new EmptyBorder(4, 2, 4, 2));
+        centerPanel.setBorder(new EmptyBorder(3, 0, 3, 0));
 
-        customerLabel = new JLabel("👤 " + order.getCustomerName());
+        customerLabel = new JLabel("CUST: " + order.getCustomerName());
         customerLabel.setFont(NeobrutalismTheme.FONT_SUBHEADER);
         customerLabel.setForeground(NeobrutalismTheme.COLOR_BLACK);
         customerLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        itemsLabel = new JLabel("🍽 " + truncate(order.getItemsAsString(), 36));
+        itemsLabel = new JLabel("ITEMS: " + truncate(order.getItemsAsString(), 36));
         itemsLabel.setFont(NeobrutalismTheme.FONT_SMALL);
         itemsLabel.setForeground(new Color(0x33, 0x33, 0x33));
         itemsLabel.setToolTipText(order.getItemsAsString());
         itemsLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        workerLabel = new JLabel("⚙ " + order.getCurrentWorkerName());
+        workerLabel = new JLabel("STAFF: " + order.getCurrentWorkerName());
         workerLabel.setFont(NeobrutalismTheme.FONT_SMALL);
         workerLabel.setForeground(new Color(0x55, 0x55, 0x55));
         workerLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -150,11 +152,11 @@ public class OrderCard extends JPanel {
         bottomPanel.add(statusRow);
         bottomPanel.add(Box.createVerticalStrut(4));
 
-        // Linear Progress Bar (Custom styled sharp neobrutal progress bar)
+        // Linear Progress Bar
         progressBar = new JProgressBar(0, 100);
         progressBar.setValue(0);
         progressBar.setStringPainted(false);
-        progressBar.setPreferredSize(new Dimension(280, 10));
+        progressBar.setPreferredSize(new Dimension(240, 10));
         progressBar.setBorder(new LineBorder(NeobrutalismTheme.COLOR_BLACK, 2, false));
         progressBar.setBackground(NeobrutalismTheme.COLOR_WHITE);
         progressBar.setForeground(NeobrutalismTheme.COLOR_BLACK);
@@ -162,11 +164,11 @@ public class OrderCard extends JPanel {
 
         add(bottomPanel, BorderLayout.SOUTH);
 
-        // Hover effect for card
+        // Subtle hover
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                setBackground(new Color(0xFD, 0xFD, 0xF9));
+                setBackground(new Color(0xFD, 0xFD, 0xF8));
                 repaint();
             }
 
@@ -178,15 +180,11 @@ public class OrderCard extends JPanel {
         });
     }
 
-    /**
-     * Refreshes the real-time timer, progress bar, and status pill colors.
-     */
     public void updateDisplay() {
         OrderStatus status = order.getStatus();
         statusPill.setText(status.getDisplayName());
-        workerLabel.setText("⚙ " + order.getCurrentWorkerName());
+        workerLabel.setText("STAFF: " + order.getCurrentWorkerName());
 
-        // Color coding per requirement
         Color pillBg = Color.decode(status.getHexColor());
         statusPill.setBackground(pillBg);
         if (status == OrderStatus.PREPARING) {
@@ -203,12 +201,10 @@ public class OrderCard extends JPanel {
             progressBar.setForeground(NeobrutalismTheme.COLOR_BLACK);
         }
 
-        // Timer
         double elapsedSec = order.getStageElapsedMs() / 1000.0;
         double totalSec = order.getTotalProcessingTimeSeconds();
-        timerLabel.setText(String.format("Stage: %.1fs (Tot: %.1fs)", elapsedSec, totalSec));
+        timerLabel.setText(String.format("STAGE: %.1fs (TOT: %.1fs)", elapsedSec, totalSec));
 
-        // Progress bar value
         int progressPercent = (int) (order.getStageProgress() * 100.0);
         progressBar.setValue(progressPercent);
     }

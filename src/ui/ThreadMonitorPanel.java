@@ -18,9 +18,11 @@ public class ThreadMonitorPanel extends JPanel {
     private final Map<String, WorkerCard> workerCards = new HashMap<>();
 
     public ThreadMonitorPanel() {
-        setLayout(new BorderLayout(0, 6));
+        setLayout(new BorderLayout(0, 4));
         setBackground(NeobrutalismTheme.COLOR_PANEL_BG);
         setBorder(new LineBorder(NeobrutalismTheme.COLOR_BLACK, 3, false));
+        setPreferredSize(new Dimension(840, 142));
+        setMinimumSize(new Dimension(600, 142));
 
         buildHeader();
         buildWorkersGrid();
@@ -29,14 +31,14 @@ public class ThreadMonitorPanel extends JPanel {
     private void buildHeader() {
         JPanel header = new JPanel(new BorderLayout(8, 0));
         header.setBackground(NeobrutalismTheme.COLOR_BLACK);
-        header.setBorder(new EmptyBorder(6, 10, 6, 10));
+        header.setBorder(new EmptyBorder(6, 12, 6, 12));
 
-        JLabel title = new JLabel("⚡ THREAD EXECUTION MONITOR");
+        JLabel title = new JLabel("[THREAD MONITOR] CONCURRENT THREAD EXECUTION POOL");
         title.setFont(NeobrutalismTheme.FONT_SUBHEADER);
         title.setForeground(NeobrutalismTheme.COLOR_WHITE);
         header.add(title, BorderLayout.WEST);
 
-        JLabel info = new JLabel("3 CONCURRENT CO-ROUTINES");
+        JLabel info = new JLabel("3 DEDICATED WORKERS ACTIVE");
         info.setFont(NeobrutalismTheme.FONT_SMALL);
         info.setForeground(NeobrutalismTheme.ACCENT_YELLOW);
         header.add(info, BorderLayout.EAST);
@@ -47,11 +49,11 @@ public class ThreadMonitorPanel extends JPanel {
     private void buildWorkersGrid() {
         JPanel grid = new JPanel(new GridLayout(1, 3, 8, 0));
         grid.setBackground(NeobrutalismTheme.COLOR_BG);
-        grid.setBorder(new EmptyBorder(8, 8, 8, 8));
+        grid.setBorder(new EmptyBorder(6, 8, 8, 8));
 
-        WorkerCard kitchen = new WorkerCard("Chef-Marco (Kitchen-1)", "🍳", NeobrutalismTheme.ACCENT_BLUE);
-        WorkerCard packaging = new WorkerCard("Packer-Alex (Packaging-1)", "📦", NeobrutalismTheme.ACCENT_YELLOW);
-        WorkerCard delivery = new WorkerCard("Rider-Dash (Delivery-1)", "🚀", NeobrutalismTheme.ACCENT_GREEN);
+        WorkerCard kitchen = new WorkerCard("[KITCHEN] Chef-Marco", "Orders Cooked:", NeobrutalismTheme.ACCENT_BLUE);
+        WorkerCard packaging = new WorkerCard("[PACKAGING] Packer-Alex", "Orders Boxed:", NeobrutalismTheme.ACCENT_YELLOW);
+        WorkerCard delivery = new WorkerCard("[DELIVERY] Rider-Dash", "Orders Delivered:", NeobrutalismTheme.ACCENT_GREEN);
 
         workerCards.put("Chef-Marco", kitchen);
         workerCards.put("KitchenWorker-1", kitchen);
@@ -77,21 +79,27 @@ public class ThreadMonitorPanel extends JPanel {
     }
 
     private static class WorkerCard extends JPanel {
+        private final String countPrefix;
         private final JLabel stateBadge;
         private final JLabel countLabel;
         private final JLabel orderLabel;
 
-        public WorkerCard(String name, String icon, Color accent) {
-            setLayout(new BorderLayout(0, 4));
+        public WorkerCard(String name, String countPrefix, Color accent) {
+            this.countPrefix = countPrefix;
+
+            setLayout(new BorderLayout(0, 2));
             setBackground(NeobrutalismTheme.COLOR_WHITE);
-            setBorder(new NeobrutalismTheme.HardShadowBorder(2, 2, 6));
+            setBorder(new CompoundBorder(
+                    new LineBorder(NeobrutalismTheme.COLOR_BLACK, 2, false),
+                    new EmptyBorder(0, 0, 0, 0)
+            ));
 
             // Header strip
             JPanel strip = new JPanel(new BorderLayout(4, 0));
             strip.setBackground(accent);
-            strip.setBorder(new EmptyBorder(4, 6, 4, 6));
+            strip.setBorder(new EmptyBorder(3, 6, 3, 6));
 
-            JLabel title = new JLabel(icon + " " + name);
+            JLabel title = new JLabel(name);
             title.setFont(NeobrutalismTheme.FONT_SMALL);
             title.setForeground(NeobrutalismTheme.COLOR_BLACK);
             strip.add(title, BorderLayout.WEST);
@@ -102,7 +110,7 @@ public class ThreadMonitorPanel extends JPanel {
             JPanel body = new JPanel();
             body.setLayout(new BoxLayout(body, BoxLayout.Y_AXIS));
             body.setOpaque(false);
-            body.setBorder(new EmptyBorder(4, 6, 4, 6));
+            body.setBorder(new EmptyBorder(4, 8, 6, 8));
 
             JPanel stateRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
             stateRow.setOpaque(false);
@@ -114,20 +122,20 @@ public class ThreadMonitorPanel extends JPanel {
             stateBadge.setForeground(NeobrutalismTheme.COLOR_BLACK);
             stateBadge.setBorder(new CompoundBorder(
                     new LineBorder(NeobrutalismTheme.COLOR_BLACK, 2, false),
-                    new EmptyBorder(1, 5, 1, 5)
+                    new EmptyBorder(1, 6, 1, 6)
             ));
             stateRow.add(stateBadge);
 
-            countLabel = new JLabel("Cooked / Handled: 0");
+            countLabel = new JLabel(countPrefix + " 0");
             countLabel.setFont(NeobrutalismTheme.FONT_SMALL);
             countLabel.setForeground(NeobrutalismTheme.COLOR_BLACK);
 
-            orderLabel = new JLabel("Active Order: None");
+            orderLabel = new JLabel("ACTIVE: None");
             orderLabel.setFont(NeobrutalismTheme.FONT_SMALL);
             orderLabel.setForeground(new Color(0x55, 0x55, 0x55));
 
             body.add(stateRow);
-            body.add(Box.createVerticalStrut(4));
+            body.add(Box.createVerticalStrut(3));
             body.add(countLabel);
             body.add(Box.createVerticalStrut(2));
             body.add(orderLabel);
@@ -137,8 +145,8 @@ public class ThreadMonitorPanel extends JPanel {
 
         public void update(String state, int count, String currentOrderId) {
             stateBadge.setText(state);
-            countLabel.setText("Processed Orders: " + count);
-            orderLabel.setText("Active Order: " + (currentOrderId != null ? currentOrderId : "None"));
+            countLabel.setText(countPrefix + " " + count);
+            orderLabel.setText("ACTIVE: " + (currentOrderId != null ? currentOrderId : "None"));
 
             if ("PAUSED".equalsIgnoreCase(state)) {
                 stateBadge.setBackground(NeobrutalismTheme.ACCENT_RED);

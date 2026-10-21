@@ -17,8 +17,8 @@ import java.util.Random;
 /**
  * Order Input Section & Simulation Control Deck.
  * Built with strict Neobrutalism UI style:
- * - Thick solid borders
- * - Chunky action buttons with physical press response
+ * - Thick solid black borders
+ * - Chunky action buttons with guaranteed visible text
  * - Food quick-select item chips
  * - Form validation with red border highlighting
  */
@@ -35,32 +35,29 @@ public class OrderInputPanel extends JPanel {
     private JButton pauseResumeBtn;
     private JButton soundToggleBtn;
 
-    // Preset customer names for random order generation
     private static final String[] RANDOM_NAMES = {
-            "Alice Smith", "Bob Vance", "Charlie Day", "Diana Prince", "Ethan Hunt",
-            "Fiona Gallagher", "George Clark", "Hannah Montana", "Ian Malcolm", "Julia Roberts"
+            "Sarah Connor", "Tony Stark", "Peter Parker", "Bruce Wayne", "Clark Kent",
+            "Diana Prince", "Walter White", "Luke Skywalker", "Natasha Romanoff", "John Wick"
     };
 
-    // Preset food items
     private static final String[][] FOOD_COMBOS = {
-            {"🍕 Pepperoni Pizza", "🥤 Cold Soda"},
-            {"🍔 Double Cheeseburger", "🍟 Crispy Fries"},
-            {"🌮 Spicy Tacos (x3)", "🥑 Guacamole Bowl"},
-            {"🍣 Salmon Sushi Roll", "🍵 Green Tea"},
-            {"🥪 Club Sandwich", "🍟 Loaded Fries", "🥤 Lemonade"},
-            {"🥗 Caesar Salad", "🥖 Garlic Breadsticks"}
+            {"Pepperoni Pizza", "Cold Soda"},
+            {"Double Cheeseburger", "Crispy Fries"},
+            {"Spicy Tacos (x3)", "Guacamole Bowl"},
+            {"Salmon Sushi Roll", "Green Tea"},
+            {"Club Sandwich", "Loaded Fries", "Lemonade"},
+            {"Caesar Salad", "Garlic Breadsticks"}
     };
 
     public OrderInputPanel(OrderProcessingSystem system) {
         this.system = system;
 
-        setLayout(new BorderLayout(0, 8));
+        setLayout(new BorderLayout(0, 0));
         setBackground(NeobrutalismTheme.COLOR_PANEL_BG);
         setBorder(new LineBorder(NeobrutalismTheme.COLOR_BLACK, 3, false));
 
         buildHeader();
-        buildForm();
-        buildActionButtons();
+        buildBody();
     }
 
     private void buildHeader() {
@@ -68,12 +65,12 @@ public class OrderInputPanel extends JPanel {
         header.setBackground(NeobrutalismTheme.ACCENT_YELLOW);
         header.setBorder(new EmptyBorder(8, 12, 8, 12));
 
-        JLabel title = new JLabel("📝 DISPATCH NEW ORDER");
+        JLabel title = new JLabel("[DISPATCH] NEW FOOD ORDER");
         title.setFont(NeobrutalismTheme.FONT_HEADER);
         title.setForeground(NeobrutalismTheme.COLOR_BLACK);
         header.add(title, BorderLayout.WEST);
 
-        orderIdPreview = new JLabel("NEXT ID: " + peekNextId());
+        orderIdPreview = new JLabel("NEXT: " + peekNextId());
         orderIdPreview.setFont(NeobrutalismTheme.FONT_SMALL);
         orderIdPreview.setOpaque(true);
         orderIdPreview.setBackground(NeobrutalismTheme.COLOR_BLACK);
@@ -93,73 +90,73 @@ public class OrderInputPanel extends JPanel {
         add(combined, BorderLayout.NORTH);
     }
 
-    private void buildForm() {
-        JPanel form = new JPanel();
-        form.setLayout(new BoxLayout(form, BoxLayout.Y_AXIS));
-        form.setBackground(NeobrutalismTheme.COLOR_WHITE);
-        form.setBorder(new EmptyBorder(10, 12, 10, 12));
+    private void buildBody() {
+        JPanel container = new JPanel();
+        container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
+        container.setBackground(NeobrutalismTheme.COLOR_WHITE);
+        container.setBorder(new EmptyBorder(10, 12, 12, 12));
 
         // Error Banner
         errorBanner = new JLabel(" ");
         errorBanner.setFont(NeobrutalismTheme.FONT_SMALL);
         errorBanner.setForeground(NeobrutalismTheme.ACCENT_RED);
         errorBanner.setAlignmentX(Component.LEFT_ALIGNMENT);
-        form.add(errorBanner);
-        form.add(Box.createVerticalStrut(4));
+        container.add(errorBanner);
+        container.add(Box.createVerticalStrut(2));
 
         // Customer Name Input
         JLabel customerLabel = new JLabel("CUSTOMER NAME *");
         customerLabel.setFont(NeobrutalismTheme.FONT_SUBHEADER);
         customerLabel.setForeground(NeobrutalismTheme.COLOR_BLACK);
         customerLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        form.add(customerLabel);
-        form.add(Box.createVerticalStrut(2));
+        container.add(customerLabel);
+        container.add(Box.createVerticalStrut(2));
 
         customerField = new JTextField("Sarah Connor");
         customerField.setFont(NeobrutalismTheme.FONT_SUBHEADER);
         customerField.setBorder(new CompoundBorder(
                 new LineBorder(NeobrutalismTheme.COLOR_BLACK, 2, false),
-                new EmptyBorder(6, 8, 6, 8)
+                new EmptyBorder(5, 8, 5, 8)
         ));
-        customerField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 36));
+        customerField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 32));
         customerField.setAlignmentX(Component.LEFT_ALIGNMENT);
-        form.add(customerField);
-        form.add(Box.createVerticalStrut(8));
+        container.add(customerField);
+        container.add(Box.createVerticalStrut(6));
 
         // Items Input
         JLabel itemsLabel = new JLabel("FOOD ITEMS (comma-separated) *");
         itemsLabel.setFont(NeobrutalismTheme.FONT_SUBHEADER);
         itemsLabel.setForeground(NeobrutalismTheme.COLOR_BLACK);
         itemsLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        form.add(itemsLabel);
-        form.add(Box.createVerticalStrut(2));
+        container.add(itemsLabel);
+        container.add(Box.createVerticalStrut(2));
 
-        itemsField = new JTextField("🍕 Pepperoni Pizza, 🥤 Cold Soda");
+        itemsField = new JTextField("Pepperoni Pizza, Cold Soda");
         itemsField.setFont(NeobrutalismTheme.FONT_SUBHEADER);
         itemsField.setBorder(new CompoundBorder(
                 new LineBorder(NeobrutalismTheme.COLOR_BLACK, 2, false),
-                new EmptyBorder(6, 8, 6, 8)
+                new EmptyBorder(5, 8, 5, 8)
         ));
-        itemsField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 36));
+        itemsField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 32));
         itemsField.setAlignmentX(Component.LEFT_ALIGNMENT);
-        form.add(itemsField);
-        form.add(Box.createVerticalStrut(8));
+        container.add(itemsField);
+        container.add(Box.createVerticalStrut(6));
 
         // Quick Add Chips
-        JLabel chipsLabel = new JLabel("QUICK ADD MENU PRESETS:");
+        JLabel chipsLabel = new JLabel("QUICK ADD MENU ITEMS:");
         chipsLabel.setFont(NeobrutalismTheme.FONT_SMALL);
         chipsLabel.setForeground(new Color(0x55, 0x55, 0x55));
         chipsLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        form.add(chipsLabel);
-        form.add(Box.createVerticalStrut(4));
+        container.add(chipsLabel);
+        container.add(Box.createVerticalStrut(2));
 
-        JPanel chipsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 4, 4));
+        JPanel chipsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 4, 2));
         chipsPanel.setOpaque(false);
         chipsPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        String[] quickChips = {"🍕 Pizza", "🍔 Burger", "🍟 Fries", "🥤 Soda", "🌮 Tacos", "🍣 Sushi", "🍩 Donut"};
+        String[] quickChips = {"Pizza", "Burger", "Fries", "Soda", "Tacos", "Sushi", "Donut"};
         for (String chip : quickChips) {
-            JButton chipBtn = new JButton(chip);
+            JButton chipBtn = new JButton("+ " + chip);
             chipBtn.setFont(NeobrutalismTheme.FONT_SMALL);
             chipBtn.setBackground(NeobrutalismTheme.COLOR_MUTED);
             chipBtn.setForeground(NeobrutalismTheme.COLOR_BLACK);
@@ -179,46 +176,52 @@ public class OrderInputPanel extends JPanel {
             });
             chipsPanel.add(chipBtn);
         }
-        form.add(chipsPanel);
-        form.add(Box.createVerticalStrut(8));
+        container.add(chipsPanel);
+        container.add(Box.createVerticalStrut(6));
 
         // Priority / VIP Checkbox
-        vipCheckBox = new JCheckBox("⭐ VIP Priority Order (Preempts queue & cooks faster)");
+        vipCheckBox = new JCheckBox("★ VIP Priority Order (Preempts queue & expedited prep)");
         vipCheckBox.setFont(NeobrutalismTheme.FONT_SUBHEADER);
         vipCheckBox.setForeground(NeobrutalismTheme.ACCENT_PURPLE);
         vipCheckBox.setOpaque(false);
         vipCheckBox.setFocusPainted(false);
         vipCheckBox.setAlignmentX(Component.LEFT_ALIGNMENT);
-        form.add(vipCheckBox);
+        container.add(vipCheckBox);
+        container.add(Box.createVerticalStrut(10));
 
-        add(form, BorderLayout.CENTER);
-    }
+        // Divider
+        JPanel btnDivider = new JPanel();
+        btnDivider.setPreferredSize(new Dimension(100, 2));
+        btnDivider.setMaximumSize(new Dimension(Integer.MAX_VALUE, 2));
+        btnDivider.setBackground(NeobrutalismTheme.COLOR_BLACK);
+        btnDivider.setAlignmentX(Component.LEFT_ALIGNMENT);
+        container.add(btnDivider);
+        container.add(Box.createVerticalStrut(10));
 
-    private void buildActionButtons() {
-        JPanel btnPanel = new JPanel();
-        btnPanel.setLayout(new BoxLayout(btnPanel, BoxLayout.Y_AXIS));
-        btnPanel.setBackground(NeobrutalismTheme.COLOR_BG);
-        btnPanel.setBorder(new EmptyBorder(8, 12, 12, 12));
+        // --- BUTTONS SECTION (WITH GUARANTEED VISIBLE TEXT) ---
 
-        // Row 1: Submit Order Button (Huge primary action)
+        // 1. Primary Dispatch Button (Large & prominent)
         JButton submitBtn = NeobrutalismTheme.createButton(
-                "🚀 DISPATCH ORDER TO KITCHEN",
+                "+ DISPATCH TO KITCHEN",
                 NeobrutalismTheme.ACCENT_GREEN,
                 NeobrutalismTheme.COLOR_BLACK
         );
         submitBtn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 44));
+        submitBtn.setPreferredSize(new Dimension(400, 44));
         submitBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         submitBtn.addActionListener(e -> submitOrder());
-        btnPanel.add(submitBtn);
-        btnPanel.add(Box.createVerticalStrut(8));
+        container.add(submitBtn);
+        container.add(Box.createVerticalStrut(6));
 
-        // Row 2: Batch Simulation and Presets
-        JPanel subRow = new JPanel(new GridLayout(1, 2, 6, 0));
+        // 2. Batch & Random Grid
+        JPanel subRow = new JPanel(new GridLayout(1, 2, 8, 0));
         subRow.setOpaque(false);
         subRow.setMaximumSize(new Dimension(Integer.MAX_VALUE, 38));
+        subRow.setPreferredSize(new Dimension(400, 38));
+        subRow.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JButton batchBtn = NeobrutalismTheme.createButton(
-                "⚡ BATCH (5 ORDERS)",
+                "[5x] SIMULATE BATCH",
                 NeobrutalismTheme.ACCENT_CYAN,
                 NeobrutalismTheme.COLOR_BLACK
         );
@@ -226,23 +229,25 @@ public class OrderInputPanel extends JPanel {
         subRow.add(batchBtn);
 
         JButton singleRandomBtn = NeobrutalismTheme.createButton(
-                "🎲 RANDOM ORDER",
+                "[+] RANDOM ORDER",
                 NeobrutalismTheme.ACCENT_YELLOW,
                 NeobrutalismTheme.COLOR_BLACK
         );
         singleRandomBtn.addActionListener(e -> simulateRandomOrder());
         subRow.add(singleRandomBtn);
 
-        btnPanel.add(subRow);
-        btnPanel.add(Box.createVerticalStrut(8));
+        container.add(subRow);
+        container.add(Box.createVerticalStrut(6));
 
-        // Row 3: Pause/Resume & Audio Toggle & Clear Inputs
-        JPanel controlRow = new JPanel(new GridLayout(1, 2, 6, 0));
+        // 3. Pause & Sound Control Grid
+        JPanel controlRow = new JPanel(new GridLayout(1, 2, 8, 0));
         controlRow.setOpaque(false);
         controlRow.setMaximumSize(new Dimension(Integer.MAX_VALUE, 36));
+        controlRow.setPreferredSize(new Dimension(400, 36));
+        controlRow.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         pauseResumeBtn = NeobrutalismTheme.createButton(
-                "⏸ PAUSE SYSTEM",
+                "|| PAUSE SYSTEM",
                 NeobrutalismTheme.COLOR_WHITE,
                 NeobrutalismTheme.COLOR_BLACK
         );
@@ -250,23 +255,22 @@ public class OrderInputPanel extends JPanel {
         controlRow.add(pauseResumeBtn);
 
         soundToggleBtn = NeobrutalismTheme.createButton(
-                "🔊 SOUND: ON",
+                "[VOL] SOUND: ON",
                 NeobrutalismTheme.COLOR_WHITE,
                 NeobrutalismTheme.COLOR_BLACK
         );
         soundToggleBtn.addActionListener(e -> toggleSound());
         controlRow.add(soundToggleBtn);
 
-        btnPanel.add(controlRow);
+        container.add(controlRow);
 
-        add(btnPanel, BorderLayout.SOUTH);
+        add(container, BorderLayout.CENTER);
     }
 
     private void submitOrder() {
         String customer = customerField.getText().trim();
         String itemsRaw = itemsField.getText().trim();
 
-        // Validation
         boolean valid = true;
         if (customer.isEmpty()) {
             customerField.setBorder(new LineBorder(NeobrutalismTheme.ACCENT_RED, 3, false));
@@ -274,7 +278,7 @@ public class OrderInputPanel extends JPanel {
         } else {
             customerField.setBorder(new CompoundBorder(
                     new LineBorder(NeobrutalismTheme.COLOR_BLACK, 2, false),
-                    new EmptyBorder(6, 8, 6, 8)
+                    new EmptyBorder(5, 8, 5, 8)
             ));
         }
 
@@ -284,12 +288,12 @@ public class OrderInputPanel extends JPanel {
         } else {
             itemsField.setBorder(new CompoundBorder(
                     new LineBorder(NeobrutalismTheme.COLOR_BLACK, 2, false),
-                    new EmptyBorder(6, 8, 6, 8)
+                    new EmptyBorder(5, 8, 5, 8)
             ));
         }
 
         if (!valid) {
-            errorBanner.setText("⚠ Please fill in both Customer Name and Food Items!");
+            errorBanner.setText("! Please enter both Customer Name and Food Items");
             return;
         }
 
@@ -308,12 +312,12 @@ public class OrderInputPanel extends JPanel {
 
         system.addOrder(order);
 
-        // Reset inputs
+        // Reset
         vipCheckBox.setSelected(false);
         customerField.setText(RANDOM_NAMES[random.nextInt(RANDOM_NAMES.length)]);
         String[] nextCombo = FOOD_COMBOS[random.nextInt(FOOD_COMBOS.length)];
         itemsField.setText(String.join(", ", nextCombo));
-        orderIdPreview.setText("NEXT ID: " + peekNextId());
+        orderIdPreview.setText("NEXT: " + peekNextId());
     }
 
     public void simulateRandomOrder() {
@@ -323,7 +327,7 @@ public class OrderInputPanel extends JPanel {
         String orderId = system.generateNextOrderId();
         Order order = new Order(orderId, customer, Arrays.asList(combo), isVip);
         system.addOrder(order);
-        orderIdPreview.setText("NEXT ID: " + peekNextId());
+        orderIdPreview.setText("NEXT: " + peekNextId());
     }
 
     public void simulateRandomBatch(int count) {
@@ -341,22 +345,18 @@ public class OrderInputPanel extends JPanel {
     private void togglePause() {
         system.togglePause();
         if (system.isPaused()) {
-            pauseResumeBtn.setText("▶ RESUME SYSTEM");
-            pauseResumeBtn.setBackground(NeobrutalismTheme.ACCENT_RED);
-            pauseResumeBtn.setForeground(NeobrutalismTheme.COLOR_WHITE);
+            pauseResumeBtn.setText("> RESUME SYSTEM");
         } else {
-            pauseResumeBtn.setText("⏸ PAUSE SYSTEM");
-            pauseResumeBtn.setBackground(NeobrutalismTheme.COLOR_WHITE);
-            pauseResumeBtn.setForeground(NeobrutalismTheme.COLOR_BLACK);
+            pauseResumeBtn.setText("|| PAUSE SYSTEM");
         }
     }
 
     private void toggleSound() {
         SoundManager.toggleSound();
         if (SoundManager.isSoundEnabled()) {
-            soundToggleBtn.setText("🔊 SOUND: ON");
+            soundToggleBtn.setText("[VOL] SOUND: ON");
         } else {
-            soundToggleBtn.setText("🔇 SOUND: MUTED");
+            soundToggleBtn.setText("[MUTE] SOUND: OFF");
         }
     }
 

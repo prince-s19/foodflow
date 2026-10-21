@@ -43,7 +43,7 @@ public class Main {
                 system.addOrder(new Order(
                         system.generateNextOrderId(),
                         "Tony Stark",
-                        Arrays.asList("🍕 Pepperoni Pizza", "🥤 Cold Soda"),
+                        Arrays.asList("Pepperoni Pizza", "Cold Soda"),
                         true // VIP
                 ));
 
@@ -51,7 +51,7 @@ public class Main {
                 system.addOrder(new Order(
                         system.generateNextOrderId(),
                         "Peter Parker",
-                        Arrays.asList("🍔 Double Cheeseburger", "🍟 Crispy Fries"),
+                        Arrays.asList("Double Cheeseburger", "Crispy Fries"),
                         false
                 ));
 
@@ -59,7 +59,7 @@ public class Main {
                 system.addOrder(new Order(
                         system.generateNextOrderId(),
                         "Bruce Wayne",
-                        Arrays.asList("🍣 Dragon Roll", "🍵 Matcha Tea"),
+                        Arrays.asList("Dragon Sushi Roll", "Matcha Tea"),
                         true // VIP
                 ));
             } catch (InterruptedException ignored) {
