@@ -62,7 +62,7 @@ public class OrderCard extends JPanel {
         leftBadges.add(idLabel);
 
         if (order.isVip()) {
-            JLabel vipBadge = new JLabel("★ VIP");
+            JLabel vipBadge = new JLabel("VIP");
             vipBadge.setFont(NeobrutalismTheme.FONT_SMALL);
             vipBadge.setOpaque(true);
             vipBadge.setBackground(NeobrutalismTheme.ACCENT_PURPLE);

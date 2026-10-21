@@ -180,14 +180,14 @@ public class OrderInputPanel extends JPanel {
         container.add(Box.createVerticalStrut(6));
 
         // Priority / VIP Checkbox
-        vipCheckBox = new JCheckBox("★ VIP Priority Order (Preempts queue & expedited prep)");
+        vipCheckBox = new JCheckBox("[VIP] Priority Order (Preempts queue & expedited prep)");
         vipCheckBox.setFont(NeobrutalismTheme.FONT_SUBHEADER);
         vipCheckBox.setForeground(NeobrutalismTheme.ACCENT_PURPLE);
         vipCheckBox.setOpaque(false);
         vipCheckBox.setFocusPainted(false);
         vipCheckBox.setAlignmentX(Component.LEFT_ALIGNMENT);
         container.add(vipCheckBox);
-        container.add(Box.createVerticalStrut(10));
+        container.add(Box.createVerticalStrut(6));
 
         // Divider
         JPanel btnDivider = new JPanel();
@@ -196,7 +196,7 @@ public class OrderInputPanel extends JPanel {
         btnDivider.setBackground(NeobrutalismTheme.COLOR_BLACK);
         btnDivider.setAlignmentX(Component.LEFT_ALIGNMENT);
         container.add(btnDivider);
-        container.add(Box.createVerticalStrut(10));
+        container.add(Box.createVerticalStrut(6));
 
         // --- BUTTONS SECTION (WITH GUARANTEED VISIBLE TEXT) ---
 
@@ -206,18 +206,18 @@ public class OrderInputPanel extends JPanel {
                 NeobrutalismTheme.ACCENT_GREEN,
                 NeobrutalismTheme.COLOR_BLACK
         );
-        submitBtn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 44));
-        submitBtn.setPreferredSize(new Dimension(400, 44));
+        submitBtn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 38));
+        submitBtn.setPreferredSize(new Dimension(400, 38));
         submitBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         submitBtn.addActionListener(e -> submitOrder());
         container.add(submitBtn);
-        container.add(Box.createVerticalStrut(6));
+        container.add(Box.createVerticalStrut(4));
 
         // 2. Batch & Random Grid
         JPanel subRow = new JPanel(new GridLayout(1, 2, 8, 0));
         subRow.setOpaque(false);
-        subRow.setMaximumSize(new Dimension(Integer.MAX_VALUE, 38));
-        subRow.setPreferredSize(new Dimension(400, 38));
+        subRow.setMaximumSize(new Dimension(Integer.MAX_VALUE, 34));
+        subRow.setPreferredSize(new Dimension(400, 34));
         subRow.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JButton batchBtn = NeobrutalismTheme.createButton(
@@ -237,13 +237,13 @@ public class OrderInputPanel extends JPanel {
         subRow.add(singleRandomBtn);
 
         container.add(subRow);
-        container.add(Box.createVerticalStrut(6));
+        container.add(Box.createVerticalStrut(4));
 
         // 3. Pause & Sound Control Grid
         JPanel controlRow = new JPanel(new GridLayout(1, 2, 8, 0));
         controlRow.setOpaque(false);
-        controlRow.setMaximumSize(new Dimension(Integer.MAX_VALUE, 36));
-        controlRow.setPreferredSize(new Dimension(400, 36));
+        controlRow.setMaximumSize(new Dimension(Integer.MAX_VALUE, 32));
+        controlRow.setPreferredSize(new Dimension(400, 32));
         controlRow.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         pauseResumeBtn = NeobrutalismTheme.createButton(

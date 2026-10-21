@@ -55,7 +55,7 @@ public class DashboardLanePanel extends JPanel {
         JPanel topRow = new JPanel(new BorderLayout(6, 0));
         topRow.setOpaque(false);
 
-        JLabel titleLabel = new JLabel(stageTag + " " + stageName);
+        JLabel titleLabel = new JLabel(stageName);
         titleLabel.setFont(NeobrutalismTheme.FONT_HEADER);
         titleLabel.setForeground(NeobrutalismTheme.COLOR_BLACK);
         topRow.add(titleLabel, BorderLayout.WEST);

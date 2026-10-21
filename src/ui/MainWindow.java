@@ -114,7 +114,7 @@ public class MainWindow extends JFrame implements OrderUpdateListener {
         rightPanel.setOpaque(false);
 
         inputPanel = new OrderInputPanel(system);
-        inputPanel.setPreferredSize(new Dimension(460, 400));
+        inputPanel.setPreferredSize(new Dimension(460, 315));
         rightPanel.add(inputPanel, BorderLayout.NORTH);
 
         // Bottom Right Tabs: Completed Orders Table & Live Logs Terminal

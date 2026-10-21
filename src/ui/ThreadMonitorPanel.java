@@ -33,7 +33,7 @@ public class ThreadMonitorPanel extends JPanel {
         header.setBackground(NeobrutalismTheme.COLOR_BLACK);
         header.setBorder(new EmptyBorder(6, 12, 6, 12));
 
-        JLabel title = new JLabel("[THREAD MONITOR] CONCURRENT THREAD EXECUTION POOL");
+        JLabel title = new JLabel("[THREAD MONITOR] WORKER THREADS");
         title.setFont(NeobrutalismTheme.FONT_SUBHEADER);
         title.setForeground(NeobrutalismTheme.COLOR_WHITE);
         header.add(title, BorderLayout.WEST);
