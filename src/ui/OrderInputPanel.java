@@ -156,14 +156,14 @@ public class OrderInputPanel extends JPanel {
 
         String[] quickChips = {"Pizza", "Burger", "Fries", "Soda", "Tacos", "Sushi", "Donut"};
         for (String chip : quickChips) {
-            JButton chipBtn = new JButton("+ " + chip);
+            JButton chipBtn = new JButton(chip);
             chipBtn.setFont(NeobrutalismTheme.FONT_SMALL);
             chipBtn.setBackground(NeobrutalismTheme.COLOR_MUTED);
             chipBtn.setForeground(NeobrutalismTheme.COLOR_BLACK);
             chipBtn.setFocusPainted(false);
             chipBtn.setBorder(new CompoundBorder(
                     new LineBorder(NeobrutalismTheme.COLOR_BLACK, 2, false),
-                    new EmptyBorder(2, 6, 2, 6)
+                    new EmptyBorder(3, 6, 3, 6)
             ));
             chipBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
             chipBtn.addActionListener(e -> {
@@ -180,7 +180,7 @@ public class OrderInputPanel extends JPanel {
         container.add(Box.createVerticalStrut(6));
 
         // Priority / VIP Checkbox
-        vipCheckBox = new JCheckBox("[VIP] Priority Order (Preempts queue & expedited prep)");
+        vipCheckBox = new JCheckBox("VIP Priority Order (Preempts queue & expedited prep)");
         vipCheckBox.setFont(NeobrutalismTheme.FONT_SUBHEADER);
         vipCheckBox.setForeground(NeobrutalismTheme.ACCENT_PURPLE);
         vipCheckBox.setOpaque(false);
@@ -198,11 +198,11 @@ public class OrderInputPanel extends JPanel {
         container.add(btnDivider);
         container.add(Box.createVerticalStrut(6));
 
-        // --- BUTTONS SECTION (WITH GUARANTEED VISIBLE TEXT) ---
+        // --- BUTTONS SECTION (CLEAN TITLES WITHOUT PREFIXES/BOXES) ---
 
         // 1. Primary Dispatch Button (Large & prominent)
         JButton submitBtn = NeobrutalismTheme.createButton(
-                "+ DISPATCH TO KITCHEN",
+                "DISPATCH TO KITCHEN",
                 NeobrutalismTheme.ACCENT_GREEN,
                 NeobrutalismTheme.COLOR_BLACK
         );
@@ -221,7 +221,7 @@ public class OrderInputPanel extends JPanel {
         subRow.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JButton batchBtn = NeobrutalismTheme.createButton(
-                "[5x] SIMULATE BATCH",
+                "SIMULATE BATCH",
                 NeobrutalismTheme.ACCENT_CYAN,
                 NeobrutalismTheme.COLOR_BLACK
         );
@@ -229,7 +229,7 @@ public class OrderInputPanel extends JPanel {
         subRow.add(batchBtn);
 
         JButton singleRandomBtn = NeobrutalismTheme.createButton(
-                "[+] RANDOM ORDER",
+                "RANDOM ORDER",
                 NeobrutalismTheme.ACCENT_YELLOW,
                 NeobrutalismTheme.COLOR_BLACK
         );
@@ -247,7 +247,7 @@ public class OrderInputPanel extends JPanel {
         controlRow.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         pauseResumeBtn = NeobrutalismTheme.createButton(
-                "|| PAUSE SYSTEM",
+                "PAUSE SYSTEM",
                 NeobrutalismTheme.COLOR_WHITE,
                 NeobrutalismTheme.COLOR_BLACK
         );
@@ -255,7 +255,7 @@ public class OrderInputPanel extends JPanel {
         controlRow.add(pauseResumeBtn);
 
         soundToggleBtn = NeobrutalismTheme.createButton(
-                "[VOL] SOUND: ON",
+                "SOUND: ON",
                 NeobrutalismTheme.COLOR_WHITE,
                 NeobrutalismTheme.COLOR_BLACK
         );
@@ -345,18 +345,18 @@ public class OrderInputPanel extends JPanel {
     private void togglePause() {
         system.togglePause();
         if (system.isPaused()) {
-            pauseResumeBtn.setText("> RESUME SYSTEM");
+            pauseResumeBtn.setText("RESUME SYSTEM");
         } else {
-            pauseResumeBtn.setText("|| PAUSE SYSTEM");
+            pauseResumeBtn.setText("PAUSE SYSTEM");
         }
     }
 
     private void toggleSound() {
         SoundManager.toggleSound();
         if (SoundManager.isSoundEnabled()) {
-            soundToggleBtn.setText("[VOL] SOUND: ON");
+            soundToggleBtn.setText("SOUND: ON");
         } else {
-            soundToggleBtn.setText("[MUTE] SOUND: OFF");
+            soundToggleBtn.setText("SOUND: OFF");
         }
     }
 

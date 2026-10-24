@@ -33,7 +33,7 @@ public class ThreadMonitorPanel extends JPanel {
         header.setBackground(NeobrutalismTheme.COLOR_BLACK);
         header.setBorder(new EmptyBorder(6, 12, 6, 12));
 
-        JLabel title = new JLabel("[THREAD MONITOR] WORKER THREADS");
+        JLabel title = new JLabel("THREAD MONITOR: WORKER THREADS");
         title.setFont(NeobrutalismTheme.FONT_SUBHEADER);
         title.setForeground(NeobrutalismTheme.COLOR_WHITE);
         header.add(title, BorderLayout.WEST);
@@ -51,9 +51,9 @@ public class ThreadMonitorPanel extends JPanel {
         grid.setBackground(NeobrutalismTheme.COLOR_BG);
         grid.setBorder(new EmptyBorder(6, 8, 8, 8));
 
-        WorkerCard kitchen = new WorkerCard("[KITCHEN] Chef-Marco", "Orders Cooked:", NeobrutalismTheme.ACCENT_BLUE);
-        WorkerCard packaging = new WorkerCard("[PACKAGING] Packer-Alex", "Orders Boxed:", NeobrutalismTheme.ACCENT_YELLOW);
-        WorkerCard delivery = new WorkerCard("[DELIVERY] Rider-Dash", "Orders Delivered:", NeobrutalismTheme.ACCENT_GREEN);
+        WorkerCard kitchen = new WorkerCard("Chef-Marco (Kitchen)", "Orders Cooked:", NeobrutalismTheme.ACCENT_BLUE);
+        WorkerCard packaging = new WorkerCard("Packer-Alex (Packaging)", "Orders Boxed:", NeobrutalismTheme.ACCENT_YELLOW);
+        WorkerCard delivery = new WorkerCard("Rider-Dash (Delivery)", "Orders Delivered:", NeobrutalismTheme.ACCENT_GREEN);
 
         workerCards.put("Chef-Marco", kitchen);
         workerCards.put("KitchenWorker-1", kitchen);

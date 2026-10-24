@@ -163,20 +163,20 @@ public class HistoryTablePanel extends JPanel {
         btnPanel.setOpaque(false);
 
         JButton exportCsvBtn = NeobrutalismTheme.createButton(
-                "[CSV] EXPORT CSV",
+                "EXPORT CSV",
                 NeobrutalismTheme.ACCENT_CYAN,
                 NeobrutalismTheme.COLOR_BLACK
         );
-        exportCsvBtn.setPreferredSize(new Dimension(145, 34));
+        exportCsvBtn.setPreferredSize(new Dimension(130, 34));
         exportCsvBtn.addActionListener(e -> exportCsv());
         btnPanel.add(exportCsvBtn);
 
         JButton clearBtn = NeobrutalismTheme.createButton(
-                "[X] CLEAR HISTORY",
+                "CLEAR HISTORY",
                 NeobrutalismTheme.ACCENT_RED,
                 NeobrutalismTheme.COLOR_WHITE
         );
-        clearBtn.setPreferredSize(new Dimension(145, 34));
+        clearBtn.setPreferredSize(new Dimension(140, 34));
         clearBtn.addActionListener(e -> clearHistory());
         btnPanel.add(clearBtn);
 
@@ -207,7 +207,7 @@ public class HistoryTablePanel extends JPanel {
                         o.getOrderId(),
                         o.getCustomerName(),
                         o.getItemsAsString(),
-                        o.isVip() ? "★ VIP" : "STANDARD",
+                        o.isVip() ? "VIP" : "STANDARD",
                         String.format("%.2fs", o.getTotalProcessingTimeSeconds()),
                         String.format("%.1fs", o.getKitchenDurationMs() / 1000.0),
                         String.format("%.1fs", o.getPackagingDurationMs() / 1000.0),

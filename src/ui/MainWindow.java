@@ -166,7 +166,7 @@ public class MainWindow extends JFrame implements OrderUpdateListener {
         subTitle.setFont(NeobrutalismTheme.FONT_HEADER);
         subTitle.setForeground(NeobrutalismTheme.COLOR_BLACK);
 
-        JLabel techInfo = new JLabel("OOPS Thread Synchronization: BlockingQueue<Order> • ExecutorService • Event-Driven UI");
+        JLabel techInfo = new JLabel("OOPS Thread Synchronization: BlockingQueue<Order> | ExecutorService | Event-Driven UI");
         techInfo.setFont(NeobrutalismTheme.FONT_SMALL);
         techInfo.setForeground(new Color(0x55, 0x55, 0x55));
 

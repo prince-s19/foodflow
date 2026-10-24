@@ -78,7 +78,7 @@ public class OrderCard extends JPanel {
 
         // Cancel button (only active if not terminal)
         if (!order.getStatus().isTerminal()) {
-            JButton cancelBtn = new JButton("✕");
+            JButton cancelBtn = new JButton("X");
             cancelBtn.setFont(new Font("Segoe UI", Font.BOLD, 12));
             cancelBtn.setBackground(NeobrutalismTheme.ACCENT_RED);
             cancelBtn.setForeground(NeobrutalismTheme.COLOR_WHITE);
